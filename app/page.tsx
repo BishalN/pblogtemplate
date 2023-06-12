@@ -6,7 +6,7 @@ import { SeriesCard } from "@/components/series-card"
 
 export default function IndexPage() {
   return (
-    <main className="container max-w-4xl">
+    <main>
       <section id="hero" className="grid items-center gap-6 pb-8 pt-6 md:py-10">
         <h1 className="text-xl font-semibold text-muted-foreground">Bishal</h1>
         <p>
