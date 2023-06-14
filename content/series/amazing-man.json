@@ -1,5 +1,5 @@
 {
-  "title": "Creating booring portfolios with Next.js",
+  "title": "Creating amazing portfolios with Next.js",
   "description": "I often give bits and pieces of advice on how to build Rust stuff the comfy way. But it can be hard to see how everything comes together, especially when it comes to, say, deploying a web service in production. So, let's start from the very beginning (setting up a Linux VM), and march together towards the objective: a production-grade Rust web service, built with Nix.",
   "isCompleted": false,
   "date": "2020-01-01",

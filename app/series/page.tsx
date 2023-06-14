@@ -56,7 +56,7 @@ interface SeriesPageProps {
   isCompleted?: boolean
 }
 
-export const SeriesPageCard: React.FC<SeriesPageProps> = ({
+const SeriesPageCard: React.FC<SeriesPageProps> = ({
   date,
   description,
   title,

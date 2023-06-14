@@ -51,7 +51,7 @@ interface BlogPageCardProps {
   slug: string
 }
 
-export const BlogPageCard: React.FC<BlogPageCardProps> = ({
+const BlogPageCard: React.FC<BlogPageCardProps> = ({
   date,
   description,
   title,

@@ -23,7 +23,7 @@ async function getPostsFromTagParams(params: TagPageProps["params"]) {
   })
 
   if (!posts) {
-    null
+    return null
   }
 
   return posts
@@ -86,7 +86,7 @@ interface BlogPageCardProps {
   slug: string
 }
 
-export const BlogPageCard: React.FC<BlogPageCardProps> = ({
+const BlogPageCard: React.FC<BlogPageCardProps> = ({
   date,
   description,
   title,

@@ -84,7 +84,7 @@ export const Series = defineDocumentType(() => ({
       },
     },
     date: {
-      type: "date",
+      type: "string",
       required: true,
     },
     tags: {
