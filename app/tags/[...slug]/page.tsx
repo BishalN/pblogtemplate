@@ -1,20 +1,55 @@
 import React from "react"
 import NextLink from "next/link"
+import { notFound } from "next/navigation"
 import { allPosts } from "contentlayer/generated"
-import { compareDesc } from "date-fns"
 
 import { formatDate } from "@/lib/utils"
 
-export const metadata = {
-  title: "Blog",
+interface TagPageProps {
+  params: {
+    slug: string[]
+  }
 }
 
-export default async function BlogPage() {
-  const posts = allPosts
+export const metadata = {
+  title: "Tags",
+}
+
+async function getPostsFromTagParams(params: TagPageProps["params"]) {
+  const slug = params?.slug?.join("/")
+
+  const posts = allPosts.filter((post) => {
+    return (post.tags as string[]).includes(slug)
+  })
+
+  if (!posts) {
+    null
+  }
+
+  return posts
+}
+
+export async function generateStaticParams(): Promise<
+  TagPageProps["params"][]
+> {
+  // TODO: include the series tags as well
+  return allPosts
     .filter((post) => post.published)
-    .sort((a, b) => {
-      return compareDesc(new Date(a.date), new Date(b.date))
-    })
+    .flatMap((post) => post.tags)
+    .filter((tag, index, tags) => tags.indexOf(tag) === index)
+    .map((tag) => {
+      return {
+        slug: [tag],
+      }
+    }) as TagPageProps["params"][]
+}
+
+export default async function BlogPage({ params }: TagPageProps) {
+  const posts = await getPostsFromTagParams(params)
+
+  if (!posts) {
+    return notFound()
+  }
 
   return (
     <main className="my-10">
@@ -24,7 +59,7 @@ export default async function BlogPage() {
       >
         &larr; Back
       </NextLink>
-      <h1 className="mt-4 text-xl font-bold"> Blogs</h1>
+      <h1 className="my-10 text-xl font-bold"> All about {params.slug}</h1>
       <div className="space-y-5">
         {posts.map((post) => {
           return (

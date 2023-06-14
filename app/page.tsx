@@ -1,4 +1,5 @@
 import React from "react"
+import NextLink from "next/link"
 
 import { BlogCard } from "@/components/blog-card"
 import { ProjectCard } from "@/components/project-card"
@@ -64,6 +65,12 @@ export default function IndexPage() {
           title="How to create a booring portfolio website using nextjs and tailwindcss"
           date="Jun 7, 2023"
         />
+        <NextLink
+          href="/blogs"
+          className="cursor-pointer  underline decoration-slate-400 underline-offset-4 hover:text-muted-foreground"
+        >
+          All Posts &rarr;
+        </NextLink>
       </section>
 
       <section id="series" className="grid items-center gap-6 pt-6 md:py-4">
@@ -79,6 +86,12 @@ export default function IndexPage() {
           isCompleted
         />
         <SeriesCard title="React hooks in depth" noOfPosts="3" />
+        <NextLink
+          href="/series"
+          className="cursor-pointer  underline decoration-slate-400 underline-offset-4 hover:text-muted-foreground"
+        >
+          All Series &rarr;
+        </NextLink>
       </section>
     </main>
   )

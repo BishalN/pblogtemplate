@@ -1,8 +1,41 @@
 ---
 title: Deploying Next.js Apps
-discription: How to deploy your Next.js apps on Vercel.
+description: How to deploy your Next.js apps on Vercel.
 date: "2023-01-02"
+tags:
+  - nextjs
+  - vercel
+  - deployment
 ---
 
-This is my first post man
-How is it
+## init
+
+Use the `init` command to initialize dependencies for a new project.
+
+The `init` command installs dependencies, adds the `cn` util, configures `tailwind.config.js`, and CSS variables for the project.
+
+```bash
+npx shadcn-ui init
+```
+
+## add
+
+Use the `add` command to add components to your project.
+
+The `add` command adds a component to your project and installs all required dependencies.
+
+```bash
+npx shadcn-ui add [component]
+```
+
+### Example
+
+```bash
+npx shadcn-ui add alert-dialog
+```
+
+You can also run the command without any arguments to view a list of all available components:
+
+```bash
+npx shadcn-ui add
+```

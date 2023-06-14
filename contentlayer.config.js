@@ -37,9 +37,15 @@ export const Post = defineDocumentType(() => ({
       type: "string",
       required: true,
     },
-    discription: {
+    description: {
       type: "string",
       required: true,
+    },
+    tags: {
+      type: "list",
+      of: {
+        type: "string",
+      },
     },
     published: {
       type: "boolean",
@@ -72,6 +78,16 @@ export const Series = defineDocumentType(() => ({
     },
     // array of posts slugs
     posts: {
+      type: "list",
+      of: {
+        type: "string",
+      },
+    },
+    date: {
+      type: "date",
+      required: true,
+    },
+    tags: {
       type: "list",
       of: {
         type: "string",

@@ -1,6 +1,8 @@
 {
-  "title": "Deploying Next.js Apps",
+  "title": "Creating booring portfolios with Next.js",
   "description": "How to deploy your Next.js apps on Vercel.",
   "isCompleted": false,
+  "date": "2020-01-01",
+  "tags": ["next.js", "vercel", "portfolio", "static", "react"],
   "posts": ["first-post", "second-post", "third-post"]
 }

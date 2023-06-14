@@ -13,7 +13,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   return (
     <div>
       <h3 className="text-md underline decoration-slate-500 decoration-2 underline-offset-4 transition-colors  hover:text-muted-foreground">
-        <NextLink href={href}>{title}</NextLink>
+        <NextLink href={href} target="_blank" rel="noreferror">
+          {title}
+        </NextLink>
       </h3>
       <p className="text-gray-400">{description}</p>
     </div>
