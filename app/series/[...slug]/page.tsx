@@ -2,8 +2,18 @@ import React from "react"
 import NextLink from "next/link"
 import { notFound } from "next/navigation"
 import { Post, Series, allPosts, allSeries } from "contentlayer/generated"
+import { Link } from "lucide-react"
 
-import { formatDate } from "@/lib/utils"
+import { cn, formatDate } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Icons } from "@/components/icons"
+import { Mdx } from "@/components/mdx-components"
 
 interface SeriesPageProps {
   params: {
@@ -50,7 +60,7 @@ async function getSeriesFromParams(params: SeriesPageProps["params"]) {
   return series
 }
 
-async function getPostsFromParams(params: SeriesPageProps["params"]) {
+async function getPostsFromSeriesParams(params: SeriesPageProps["params"]) {
   const series = allSeries.find(
     (series) => series.slugAsParams === (params?.slug.join("/") as string)
   ) as Series
@@ -78,7 +88,6 @@ export async function generateStaticParams(): Promise<
   }))
 
   const combinedPaths = [...paths, ...seriesPaths]
-  console.log(combinedPaths)
 
   return [...paths, ...seriesPaths]
 }
@@ -88,15 +97,39 @@ interface TSeriesPageProps {
   posts: Post[]
 }
 
+interface SeriesPostPageProps {
+  post: Post
+  postsInSeries: Post[]
+  series: Series
+}
+
 export default async function BlogPage({ params }: SeriesPageProps) {
   if (isSeriesBlogPostPage(params)) {
-    return <SeriesPostPage params={params} />
+    const post = allPosts.find((post) => post.slugAsParams === params.slug[1])
+    if (!post) {
+      return notFound()
+    }
+    const series = allSeries.find(
+      (series) => series.slugAsParams === (params?.slug[0] as string)
+    ) as Series
+
+    const postsInSeries = (series.posts as string[]).map((postSlug) => {
+      return allPosts.find((post) => post.slugAsParams === postSlug)
+    }) as Post[]
+
+    return (
+      <SeriesPostPage
+        post={post}
+        postsInSeries={postsInSeries}
+        series={series}
+      />
+    )
   } else {
     const series = await getSeriesFromParams(params)
     if (!series) {
       return notFound()
     }
-    const posts = (await getPostsFromParams(params)) as Post[]
+    const posts = (await getPostsFromSeriesParams(params)) as Post[]
     return <SeriesPage posts={posts} series={series} />
   }
 }
@@ -151,8 +184,80 @@ function SeriesPage({ posts, series }: TSeriesPageProps) {
   )
 }
 
-function SeriesPostPage({ params }: SeriesPageProps) {
-  return <div>Hello this is a post page {params.slug}</div>
+function SeriesPostPage({ post, postsInSeries, series }: SeriesPostPageProps) {
+  return (
+    <div className="container">
+      <article className="relative max-w-3xl py-6 lg:py-10">
+        <Link
+          href="/blogs"
+          className={cn(
+            buttonVariants({ variant: "ghost" }),
+            "absolute left-[-200px] top-14 hidden xl:inline-flex"
+          )}
+        >
+          <Icons.chevronLeft className="mr-2 h-4 w-4" />
+          See all posts
+        </Link>
+        <div>
+          {post.date && (
+            <time
+              dateTime={post.date}
+              className="block text-sm text-muted-foreground"
+            >
+              Published on {formatDate(post.date)}
+            </time>
+          )}
+          <h1 className="font-heading mb-4 mt-2 inline-block text-4xl leading-tight lg:text-5xl">
+            {post.title}
+          </h1>
+          <div className="mb-10 space-y-2 rounded-md border p-2">
+            <p>
+              This article is part of
+              <NextLink
+                href={`series/${series.slugAsParams}`}
+                className="text-muted-foreground hover:underline hover:underline-offset-4"
+              >
+                {" "}
+                {series.title}{" "}
+              </NextLink>
+              series
+            </p>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex space-x-3 rounded-md border px-6 py-2">
+                <span>{post.title}</span>
+                <Icons.chevronDown className="h-6 w-6" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {postsInSeries.map((post, index) => {
+                  console.log(post.slug)
+                  return (
+                    <DropdownMenuItem key={post.slug}>
+                      <NextLink
+                        href={`/series/${series.slugAsParams}/${post.slugAsParams}`}
+                      >
+                        {index + 1} {":"} {post.title}
+                      </NextLink>
+                    </DropdownMenuItem>
+                  )
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+        <Mdx code={post.body.code} />
+        <hr className="mt-12" />
+        <div className="flex justify-center py-6 lg:py-10">
+          <Link
+            href="/blogs"
+            className={cn(buttonVariants({ variant: "ghost" }))}
+          >
+            <Icons.chevronLeft className="mr-2 h-4 w-4" />
+            See all posts
+          </Link>
+        </div>
+      </article>
+    </div>
+  )
 }
 
 interface BlogPageCardProps {
