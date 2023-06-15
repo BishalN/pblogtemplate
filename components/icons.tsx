@@ -2,6 +2,7 @@ import {
   Check,
   ChevronDown,
   ChevronLeft,
+  ChevronRight,
   Copy,
   LucideProps,
   Moon,
@@ -18,6 +19,7 @@ export const Icons = {
   twitter: Twitter,
   chevronLeft: ChevronLeft,
   chevronDown: ChevronDown,
+  chevronRight: ChevronRight,
   check: Check,
   copy: Copy,
   logo: (props: LucideProps) => (

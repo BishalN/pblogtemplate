@@ -28,6 +28,10 @@ export function SeriesPostPage({
   postsInSeries,
   series,
 }: SeriesPostPageProps) {
+  const nextPostInSeries = postsInSeries.find(
+    (postInSeries) => postInSeries.part === post.part + 1
+  )
+
   return (
     <div className="container">
       <article className="relative max-w-3xl py-6 lg:py-10">
@@ -89,13 +93,24 @@ export function SeriesPostPage({
         <Mdx code={post.body.code} />
         <hr className="mt-12" />
         <div className="flex justify-center py-6 lg:py-10">
-          <Link
-            href="/blogs"
-            className={cn(buttonVariants({ variant: "ghost" }))}
-          >
-            <Icons.chevronLeft className="mr-2 h-4 w-4" />
-            See all posts
-          </Link>
+          {nextPostInSeries ? (
+            <NextLink
+              href={`/series/${series.slugAsParams}/${nextPostInSeries?.slugAsParams}`}
+              className={cn(buttonVariants({ variant: "ghost" }))}
+            >
+              Next post in series{" "}
+              {`${nextPostInSeries?.part}: ${nextPostInSeries?.title}`}
+              <Icons.chevronRight className="mr-2 h-4 w-4" />
+            </NextLink>
+          ) : (
+            <NextLink
+              href={`/series/${series.slugAsParams}`}
+              className={cn(buttonVariants({ variant: "ghost" }))}
+            >
+              <Icons.chevronLeft className="mr-2 h-4 w-4" />
+              Go back to series page
+            </NextLink>
+          )}
         </div>
       </article>
     </div>
