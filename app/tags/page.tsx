@@ -7,7 +7,6 @@ export const metadata = {
 }
 
 export default async function BlogPage() {
-  // TODO: include the series tags as well
   const tags = allPosts
     .filter((post) => post.published)
     .flatMap((post) => post.tags)

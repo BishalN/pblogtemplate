@@ -22,7 +22,7 @@ async function getPostsFromTagParams(params: TagPageProps["params"]) {
     return (post.tags as string[]).includes(slug)
   })
 
-  if (!posts) {
+  if (posts.length === 0) {
     return null
   }
 
@@ -32,7 +32,6 @@ async function getPostsFromTagParams(params: TagPageProps["params"]) {
 export async function generateStaticParams(): Promise<
   TagPageProps["params"][]
 > {
-  // TODO: include the series tags as well
   return allPosts
     .filter((post) => post.published)
     .flatMap((post) => post.tags)
@@ -47,7 +46,6 @@ export async function generateStaticParams(): Promise<
 export default async function BlogPage({ params }: TagPageProps) {
   const posts = await getPostsFromTagParams(params)
 
-  // TODO: Unkown tags should be 404 currently everything shows up as 200
   if (!posts) {
     return notFound()
   }

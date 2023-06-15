@@ -1,13 +1,5 @@
-"use client"
-
 import NextLink from "next/link"
 import { Series } from "@/.contentlayer/generated"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu"
 import { Link } from "lucide-react"
 
 import { cn, formatDate } from "@/lib/utils"
@@ -16,6 +8,12 @@ import { PostWithPart } from "@/app/series/[...slug]/page"
 import { Icons } from "./icons"
 import { Mdx } from "./mdx-components"
 import { buttonVariants } from "./ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu"
 
 export interface SeriesPostPageProps {
   post: PostWithPart
@@ -74,7 +72,7 @@ export function SeriesPostPage({
                 <span>{`${post.part}: ${post.title}`}</span>
                 <Icons.chevronDown className="h-6 w-6" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
+              <DropdownMenuContent className="px-4">
                 {postsInSeries.map((post) => {
                   return (
                     <DropdownMenuItem key={post.slug}>
