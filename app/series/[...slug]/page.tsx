@@ -2,8 +2,8 @@ import React from "react"
 import { notFound } from "next/navigation"
 import { Post, Series, allPosts, allSeries } from "contentlayer/generated"
 
+import { SeriesPostPage } from "@/components/series-blog-page"
 import { SeriesPage } from "@/components/series-page"
-import { SeriesPostPage } from "@/components/series-post-page"
 
 interface SeriesPageProps {
   params: {
@@ -15,27 +15,27 @@ export const metadata = {
   title: "Series",
 }
 
-function isSeriesBlogPostPage(params: SeriesPageProps["params"]) {
+function isSeriesBlogPage(params: SeriesPageProps["params"]) {
   // {slug:["series-slug", "post-slug"]}
-  return params?.slug?.length > 1
+  return params?.slug?.length === 2
 }
 
-async function getSeriesFromParams(params: SeriesPageProps["params"]) {
-  const slug = params?.slug?.join("/")
+function isSeriesPage(params: SeriesPageProps["params"]) {
+  // {slug:["series-slug"]}
+  return params?.slug?.length === 1
+}
 
-  // this will not work for series blog pages
+async function getSeries(slug: string) {
   const series = allSeries.find((series) => series.slugAsParams === slug)
-
   if (!series) {
     return null
   }
-
   return series
 }
 
-async function getPostsFromSeriesParams(params: SeriesPageProps["params"]) {
+async function getPostsFromSeriesSlug(slug: string) {
   const series = allSeries.find(
-    (series) => series.slugAsParams === (params?.slug.join("/") as string)
+    (series) => series.slugAsParams === slug
   ) as Series
 
   const seriesPosts = (series.posts as string[]).map((postSlug) => {
@@ -60,20 +60,26 @@ export async function generateStaticParams(): Promise<
     slug: series.slugAsParams.split("/"),
   }))
 
-  const combinedPaths = [...paths, ...seriesPaths]
-
   return [...paths, ...seriesPaths]
 }
 
 export default async function BlogPage({ params }: SeriesPageProps) {
-  if (isSeriesBlogPostPage(params)) {
+  if (isSeriesBlogPage(params)) {
     const post = allPosts.find((post) => post.slugAsParams === params.slug[1])
     if (!post) {
       return notFound()
     }
+
     const series = allSeries.find(
-      (series) => series.slugAsParams === (params?.slug[0] as string)
+      (series) => series.slugAsParams === params.slug[0]
     ) as Series
+
+    // Impossible Defensive Programming
+    // TODO: It should not be required since we don't have any ssg path generated
+    // for such conditions
+    if (!series) {
+      return notFound()
+    }
 
     const postsInSeries = (series.posts as string[]).map((postSlug) => {
       return allPosts.find((post) => post.slugAsParams === postSlug)
@@ -86,12 +92,16 @@ export default async function BlogPage({ params }: SeriesPageProps) {
         series={series}
       />
     )
-  } else {
-    const series = await getSeriesFromParams(params)
+  }
+
+  if (isSeriesPage(params)) {
+    const series = await getSeries(params.slug[0])
     if (!series) {
       return notFound()
     }
-    const posts = (await getPostsFromSeriesParams(params)) as Post[]
+    const posts = (await getPostsFromSeriesSlug(params.slug[0])) as Post[]
     return <SeriesPage posts={posts} series={series} />
   }
+
+  return notFound()
 }
