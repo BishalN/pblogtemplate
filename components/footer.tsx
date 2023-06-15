@@ -9,7 +9,7 @@ export const Footer = () => {
     <footer className="my-10">
       <hr className="h-4 " />
       <div className="flex justify-between">
-        <p>Bishal Neupane</p>
+        <NextLink href="/">Bishal Neupane</NextLink>
         <div className="flex space-x-4">
           <NextLink
             href={siteConfig.links.github}
