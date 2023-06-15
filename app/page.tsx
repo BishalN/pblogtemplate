@@ -1,6 +1,6 @@
 import React from "react"
 import NextLink from "next/link"
-import { Series, allPosts, allSeries } from "contentlayer/generated"
+import { allPosts, allSeries } from "contentlayer/generated"
 import { compareDesc } from "date-fns"
 
 import { siteConfig } from "@/config/site"
@@ -48,6 +48,7 @@ export default function IndexPage() {
               key={post.slugAsParams}
               title={post.title}
               date={post.date}
+              slug={post.slugAsParams}
             />
           )
         })}
@@ -73,6 +74,7 @@ export default function IndexPage() {
               title={serie.title}
               isCompleted={serie.isCompleted}
               noOfPosts={serie.posts!.length}
+              slug={serie.slugAsParams}
             />
           )
         })}

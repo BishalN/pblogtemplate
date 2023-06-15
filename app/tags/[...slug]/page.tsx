@@ -3,7 +3,7 @@ import NextLink from "next/link"
 import { notFound } from "next/navigation"
 import { allPosts } from "contentlayer/generated"
 
-import { formatDate } from "@/lib/utils"
+import { BlogPageCard } from "@/components/blog-page-card"
 
 interface TagPageProps {
   params: {
@@ -47,6 +47,7 @@ export async function generateStaticParams(): Promise<
 export default async function BlogPage({ params }: TagPageProps) {
   const posts = await getPostsFromTagParams(params)
 
+  // TODO: Unkown tags should be 404 currently everything shows up as 200
   if (!posts) {
     return notFound()
   }
@@ -75,47 +76,5 @@ export default async function BlogPage({ params }: TagPageProps) {
         })}
       </div>
     </main>
-  )
-}
-
-interface BlogPageCardProps {
-  title: string
-  date: string
-  description: string
-  tags?: string[]
-  slug: string
-}
-
-const BlogPageCard: React.FC<BlogPageCardProps> = ({
-  date,
-  description,
-  title,
-  tags,
-  slug,
-}) => {
-  return (
-    <div className="my-5 space-y-2">
-      <NextLink
-        href={`/blogs/${slug}`}
-        className="cursor-pointer text-lg underline decoration-slate-500 underline-offset-4"
-      >
-        {title}
-      </NextLink>
-      <div className="flex space-x-3 text-muted-foreground">
-        <p className="">{formatDate(date)}</p>
-        {tags?.map((tag) => {
-          return (
-            <NextLink
-              href={`/tags/${tag}`}
-              key={tag}
-              className=" cursor-pointer"
-            >
-              #{tag}
-            </NextLink>
-          )
-        })}
-      </div>
-      <p className="max-w-3xl text-gray-400">{description}</p>
-    </div>
   )
 }
