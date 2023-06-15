@@ -4,6 +4,8 @@ import { Series } from "contentlayer/generated"
 import { formatDate } from "@/lib/utils"
 import { PostWithPart } from "@/app/series/[...slug]/page"
 
+import { GoBack } from "./go-back"
+
 export interface SeriesPageProps {
   series: Series
   posts: PostWithPart[]
@@ -12,13 +14,7 @@ export interface SeriesPageProps {
 export function SeriesPage({ posts, series }: SeriesPageProps) {
   return (
     <main className="my-10">
-      <NextLink
-        href="/"
-        className="underline decoration-slate-500 underline-offset-4"
-      >
-        &larr; Back
-      </NextLink>
-
+      <GoBack />
       <h1 className="mb-2 mt-10 space-x-3 font-bold">
         <span className="text-xl">{series.title} </span>
         <span className="rounded-lg border bg-gray-600  p-1 text-muted-foreground">

@@ -1,9 +1,9 @@
 import React from "react"
-import NextLink from "next/link"
 import { notFound } from "next/navigation"
 import { allPosts } from "contentlayer/generated"
 
 import { BlogPageCard } from "@/components/blog-page-card"
+import { GoBack } from "@/components/go-back"
 
 interface TagPageProps {
   params: {
@@ -52,12 +52,7 @@ export default async function BlogPage({ params }: TagPageProps) {
 
   return (
     <main className="my-10">
-      <NextLink
-        href="/"
-        className="underline decoration-slate-500 underline-offset-4"
-      >
-        &larr; Back
-      </NextLink>
+      <GoBack />
       <h1 className="my-10 text-xl font-bold"> All about {params.slug}</h1>
       <div className="space-y-5">
         {posts.map((post) => {

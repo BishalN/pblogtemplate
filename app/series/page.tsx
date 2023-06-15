@@ -1,8 +1,8 @@
 import React from "react"
-import NextLink from "next/link"
 import { allSeries } from "contentlayer/generated"
 import { compareDesc } from "date-fns"
 
+import { GoBack } from "@/components/go-back"
 import { SeriesPageCard } from "@/components/series-page-card"
 
 export const metadata = {
@@ -16,12 +16,7 @@ export default async function BlogPage() {
 
   return (
     <main className="my-10">
-      <NextLink
-        href="/"
-        className="underline decoration-slate-500 underline-offset-4"
-      >
-        &larr; Back
-      </NextLink>
+      <GoBack />
       <h1 className="mt-4 text-xl font-bold">Series</h1>
       <p className="max-w-2xl">
         Series are long-form content. They usually start with a premise:

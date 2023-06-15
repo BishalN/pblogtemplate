@@ -2,6 +2,8 @@ import React from "react"
 import NextLink from "next/link"
 import { allPosts } from "contentlayer/generated"
 
+import { GoBack } from "@/components/go-back"
+
 export const metadata = {
   title: "Tags",
 }
@@ -14,12 +16,7 @@ export default async function BlogPage() {
 
   return (
     <main className="my-10">
-      <NextLink
-        href="/"
-        className="underline decoration-slate-500 underline-offset-4"
-      >
-        &larr; Back
-      </NextLink>
+      <GoBack />
       <h1 className="my-10 text-xl font-bold">All Tags</h1>
       <div className="space-x-5">
         {tags.map((tag) => {
