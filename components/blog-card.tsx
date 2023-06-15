@@ -1,3 +1,5 @@
+import { formatDate } from "@/lib/utils"
+
 interface BlogCardProps {
   title: string
   date: string
@@ -9,7 +11,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({ date, title }) => {
       <p className="cursor-pointer text-gray-400 underline decoration-slate-500 underline-offset-4">
         {title}
       </p>
-      <p className="text-muted-foreground">{date}</p>
+      <p className="text-muted-foreground">{formatDate(date)}</p>
     </div>
   )
 }

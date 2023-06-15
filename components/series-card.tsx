@@ -1,6 +1,6 @@
 interface SeriesCardProps {
   title: string
-  noOfPosts: string
+  noOfPosts: number
   isCompleted?: boolean
 }
 
