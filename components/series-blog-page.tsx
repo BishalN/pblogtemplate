@@ -1,7 +1,7 @@
 "use client"
 
 import NextLink from "next/link"
-import { Post, Series } from "@/.contentlayer/generated"
+import { Series } from "@/.contentlayer/generated"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,14 +11,15 @@ import {
 import { Link } from "lucide-react"
 
 import { cn, formatDate } from "@/lib/utils"
+import { PostWithPart } from "@/app/series/[...slug]/page"
 
 import { Icons } from "./icons"
 import { Mdx } from "./mdx-components"
 import { buttonVariants } from "./ui/button"
 
 export interface SeriesPostPageProps {
-  post: Post
-  postsInSeries: Post[]
+  post: PostWithPart
+  postsInSeries: PostWithPart[]
   series: Series
 }
 
@@ -50,7 +51,7 @@ export function SeriesPostPage({
             </time>
           )}
           <h1 className="font-heading mb-4 mt-2 inline-block text-4xl leading-tight lg:text-5xl">
-            {post.title}
+            {post.part}: {post.title}
           </h1>
           <div className="mb-10 space-y-2 rounded-md border p-2">
             <p>
@@ -66,17 +67,17 @@ export function SeriesPostPage({
             </p>
             <DropdownMenu>
               <DropdownMenuTrigger className="flex space-x-3 rounded-md border px-6 py-2">
-                <span>{post.title}</span>
+                <span>{`${post.part}: ${post.title}`}</span>
                 <Icons.chevronDown className="h-6 w-6" />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                {postsInSeries.map((post, index) => {
+                {postsInSeries.map((post) => {
                   return (
                     <DropdownMenuItem key={post.slug}>
                       <NextLink
                         href={`/series/${series.slugAsParams}/${post.slugAsParams}`}
                       >
-                        {index + 1} {":"} {post.title}
+                        {`${post.part}: ${post.title}`}
                       </NextLink>
                     </DropdownMenuItem>
                   )

@@ -28,10 +28,10 @@ export const siteConfig = {
     github: "https://github.com/bishaln",
     docs: "https://bishalneupane.com",
   },
-  intro: `Hi there, Im Bishal Neupane. Im 21 y/o and going to university. I like
+  intro: `Hi there, I'm Bishal Neupane. I'm 21 y/o and going to university. I like
           pumping irons and building things. I enjoy learning new things and web
           development.`,
-  currentWork: `Right now Im building an analytics service, writing blog posts and
+  currentWork: `Right now I'm building an analytics service, writing blog posts and
           going to the gym regularly.`,
   projects: [
     {

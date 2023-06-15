@@ -1,11 +1,12 @@
 import NextLink from "next/link"
-import { Post, Series } from "contentlayer/generated"
+import { Series } from "contentlayer/generated"
 
 import { formatDate } from "@/lib/utils"
+import { PostWithPart } from "@/app/series/[...slug]/page"
 
 export interface SeriesPageProps {
   series: Series
-  posts: Post[]
+  posts: PostWithPart[]
 }
 
 export function SeriesPage({ posts, series }: SeriesPageProps) {
@@ -37,10 +38,11 @@ export function SeriesPage({ posts, series }: SeriesPageProps) {
       <p>{series.description}</p>
       <div className="space-y-5">
         {posts?.length ? (
-          posts.map((post) => {
+          posts.map((post, index) => {
             return (
               <SeriesBlogPageCard
                 key={post.slug}
+                part={post.part}
                 date={post.date}
                 description={post.description}
                 title={post.title}
@@ -65,6 +67,7 @@ interface SeriesBlogPageCardProps {
   tags?: string[]
   slug: string
   seriesName: string
+  part: number
 }
 
 const SeriesBlogPageCard: React.FC<SeriesBlogPageCardProps> = ({
@@ -73,6 +76,7 @@ const SeriesBlogPageCard: React.FC<SeriesBlogPageCardProps> = ({
   title,
   tags,
   slug,
+  part,
   seriesName,
 }) => {
   return (
@@ -81,7 +85,7 @@ const SeriesBlogPageCard: React.FC<SeriesBlogPageCardProps> = ({
         href={`/series/${seriesName}/${slug}`}
         className="cursor-pointer text-lg underline decoration-slate-500 underline-offset-4"
       >
-        {title}
+        {part}: {title}
       </NextLink>
       <div className="flex space-x-3 text-muted-foreground">
         <p className="">{formatDate(date)}</p>

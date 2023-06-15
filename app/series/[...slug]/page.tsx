@@ -33,14 +33,26 @@ async function getSeries(slug: string) {
   return series
 }
 
-async function getPostsFromSeriesSlug(slug: string) {
+export type PostWithPart = Post & {
+  part: number
+}
+
+async function getPostsFromSeriesSlug(slug: string): Promise<PostWithPart[]> {
   const series = allSeries.find(
     (series) => series.slugAsParams === slug
   ) as Series
 
-  const seriesPosts = (series.posts as string[]).map((postSlug) => {
-    return allPosts.find((post) => post.slugAsParams === postSlug)
+  const seriesPosts: PostWithPart[] = series.posts.map((postSlug) => {
+    const [part, actualSlug] = postSlug.split(":")
+    const foundPost = allPosts.find(
+      (post) => post.slugAsParams === actualSlug
+    ) as Post
+    return {
+      ...foundPost,
+      part: parseInt(part),
+    }
   })
+
   return seriesPosts
 }
 
@@ -81,13 +93,24 @@ export default async function BlogPage({ params }: SeriesPageProps) {
       return notFound()
     }
 
-    const postsInSeries = (series.posts as string[]).map((postSlug) => {
-      return allPosts.find((post) => post.slugAsParams === postSlug)
-    }) as Post[]
+    const postsInSeries: PostWithPart[] = series.posts.map((postSlug) => {
+      const [part, actualSlug] = postSlug.split(":")
+      const foundPost = allPosts.find(
+        (post) => post.slugAsParams === actualSlug
+      ) as Post
+      return {
+        ...foundPost,
+        part: parseInt(part),
+      }
+    })
+
+    const postWithPart = postsInSeries.find(
+      (p) => p.slugAsParams === post.slugAsParams
+    ) as PostWithPart
 
     return (
       <SeriesPostPage
-        post={post}
+        post={postWithPart}
         postsInSeries={postsInSeries}
         series={series}
       />
@@ -99,7 +122,7 @@ export default async function BlogPage({ params }: SeriesPageProps) {
     if (!series) {
       return notFound()
     }
-    const posts = (await getPostsFromSeriesSlug(params.slug[0])) as Post[]
+    const posts = await getPostsFromSeriesSlug(params.slug[0])
     return <SeriesPage posts={posts} series={series} />
   }
 

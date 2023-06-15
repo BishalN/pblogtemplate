@@ -4,5 +4,5 @@
   "isCompleted": false,
   "date": "2020-01-01",
   "tags": ["next.js", "vercel", "portfolio", "static", "react"],
-  "posts": ["first-post", "second-post", "third-post"]
+  "posts": ["1:first-post", "2:second-post", "3:third-post"]
 }
